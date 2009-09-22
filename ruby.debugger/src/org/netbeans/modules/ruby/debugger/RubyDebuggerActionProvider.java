@@ -75,6 +75,8 @@ public final class RubyDebuggerActionProvider extends ActionsProviderSupport imp
         s.add(ActionsManager.ACTION_STEP_OVER);
         s.add(ActionsManager.ACTION_STEP_OUT);
         s.add(ActionsManager.ACTION_RUN_TO_CURSOR);
+        s.add(ActionsManager.ACTION_JUMP);
+        s.add(ActionsManager.ACTION_PAUSE);
         ACTIONS = Collections.unmodifiableSet(s);
     }
     
@@ -113,8 +115,12 @@ public final class RubyDebuggerActionProvider extends ActionsProviderSupport imp
     @Override
     public void doAction(final Object action) {
         LOGGER.finer("Performing \"" + action + '"');
+        setEnabled(ActionsManager.ACTION_PAUSE, true);
         if (action == ActionsManager.ACTION_KILL) {
             finish(true);
+            return;
+        } else if (action == ActionsManager.ACTION_PAUSE) {
+            rubySession.pause();
             return;
         }
         if (frontEndSemaphore.getQueueLength() > 10) {
@@ -135,6 +141,7 @@ public final class RubyDebuggerActionProvider extends ActionsProviderSupport imp
             }
         }
         if (action == ActionsManager.ACTION_CONTINUE) {
+            setEnabled(ActionsManager.ACTION_CONTINUE, false);
             rubySession.resume();
             contextProvider.fireModelChanges();
         } else if (action == ActionsManager.ACTION_STEP_INTO) {
@@ -152,6 +159,8 @@ public final class RubyDebuggerActionProvider extends ActionsProviderSupport imp
             rubySession.stepReturn();
         } else if (action == ActionsManager.ACTION_STEP_OVER) {
             rubySession.stepOver();
+        } else if (action == ActionsManager.ACTION_JUMP) {
+            rubySession.jump();
         }
         ContextProviderWrapper.getSessionsModel().fireChanges();
         backEndSemaphore.release();
@@ -199,6 +208,7 @@ public final class RubyDebuggerActionProvider extends ActionsProviderSupport imp
                 if (shouldStop) {
                     stopHere(event);
                 } else {
+                    setEnabled(ActionsManager.ACTION_PAUSE, true);
                     event.getRubyThread().resume();
                     backEndSemaphore.release();
                     return;
@@ -242,6 +252,8 @@ public final class RubyDebuggerActionProvider extends ActionsProviderSupport imp
     
     private void stopHere(final RubyDebugEvent suspensionEvent) {
         rubySession.suspend(suspensionEvent.getRubyThread(), contextProvider);
+        setEnabled(ActionsManager.ACTION_PAUSE, false);
+        setEnabled(ActionsManager.ACTION_CONTINUE, true);
         setEnabled(ActionsManager.ACTION_STEP_OUT, rubySession.getFrames().length != 1);
     }
 

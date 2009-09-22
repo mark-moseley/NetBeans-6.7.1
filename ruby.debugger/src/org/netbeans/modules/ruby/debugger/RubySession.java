@@ -205,6 +205,23 @@ public final class RubySession {
         }
     }
 
+    void jump() {
+        int line;
+        if (TEST) {
+            line = runningToLine;
+        } else {
+            beforeProceed();
+            Line eLine = EditorUtil.getCurrentLine();
+            if (eLine == null) { return; }
+            line = eLine.getLineNumber() + 1;
+        }
+        activeThread.jump(line);
+    }
+
+    void pause() {
+        proxy.threadPause(activeThread.getId());
+    }
+
     boolean isRunningTo(final File f, final int line) {
         assert f != null : "isRunningTo is not passed null File arg";
         return f.equals(runningToFile) && line == runningToLine;
@@ -407,6 +424,21 @@ public final class RubySession {
             LOGGER.warning("There is no thread for: " + ti);
             return false; // 'default'
         }
+    }
+
+    public void setValueAt(final RubyVariable var, final String str)
+    {
+        String expression;
+        if (var.getValue().getReferenceTypeName().equals("String"))
+            expression = var.getName() + " = \"" + str + "\"";
+        else
+            expression = var.getName() + " = " + str;
+        inspectExpression(expression);
+    }
+
+    public void setTypeAt(final RubyVariable var, final String str)
+    {
+        proxy.setType(var, str);
     }
     
     private void annotateCallStack(final RubyThread thread) {

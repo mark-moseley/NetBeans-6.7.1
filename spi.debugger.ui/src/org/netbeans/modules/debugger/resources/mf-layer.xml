@@ -142,7 +142,12 @@ made subject to such option by the copyright holder.
                 <attr name="instanceClass" stringvalue="org.netbeans.modules.debugger.ui.actions.DebuggerAction"/>
                 <attr name="instanceCreate" methodvalue="org.netbeans.modules.debugger.ui.actions.DebuggerAction.createStepOperationAction"/>
                 <attr name="instanceOf" stringvalue="javax.swing.Action"/>
-            </file>    
+            </file>
+            <file name="org-netbeans-modules-debugger-ui-actions-JumpAction.instance">
+                <attr name="instanceClass" stringvalue="org.netbeans.modules.debugger.ui.actions.DebuggerAction"/>
+                <attr name="instanceCreate" methodvalue="org.netbeans.modules.debugger.ui.actions.DebuggerAction.createJumpAction"/>
+                <attr name="instanceOf" stringvalue="javax.swing.Action"/>
+            </file>
 
             <file name="org-netbeans-modules-debugger-ui-actions-DebugMainProjectAction.instance"/>
             <file name="org-netbeans-modules-debugger-ui-actions-DebugProjectAction.instance"/>

@@ -222,6 +222,12 @@ public class DebuggerAction extends AbstractAction {
         return action;
     }
 
+    public static DebuggerAction createJumpAction () {
+        DebuggerAction action = new DebuggerAction(ActionsManager.ACTION_JUMP);
+        action.putValue (Action.NAME, "CTL_Jump_action_name");
+        return action;
+    }
+
     public static DebuggerAction createStepIntoAction () {
         DebuggerAction action = new DebuggerAction(ActionsManager.ACTION_STEP_INTO);
         action.putValue (Action.NAME, "CTL_Step_into_action_name");

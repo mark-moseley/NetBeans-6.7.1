@@ -87,7 +87,7 @@ public final class RubyPlatform implements Comparable<RubyPlatform> {
      */
     public static final String RUBYSTUBS = "rubystubs"; //NOI18N
     /** Name of the Ruby Debug IDE gem. */
-    static final String RUBY_DEBUG_IDE_NAME = "ruby-debug-ide"; // NOI18N
+    static final String RUBY_DEBUG_IDE_NAME = "ruby-debug-ide19"; // NOI18N
 
     private final Info info;
 

@@ -106,6 +106,8 @@ public final class ActionsManager {
     /** Action constant for Restart Action. */
     public static final Object              ACTION_TOGGLE_BREAKPOINT = "toggleBreakpoint";
     
+    /** Action constant for Jump Action. */
+    public static final Object              ACTION_JUMP = "jump";
     
     // variables ...............................................................
     
