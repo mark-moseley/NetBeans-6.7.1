@@ -217,12 +217,19 @@ public class VariablesModel implements TreeModel, ExtendedNodeModel, TableModel 
     
     public boolean isReadOnly(Object node, String columnID) throws
             UnknownTypeException {
-        return true;
+        return (LOCALS_TYPE_COLUMN_ID.equals(columnID)); // disable changing variable type for now
     }
     
     public void setValueAt(Object node, String columnID, Object value)
             throws UnknownTypeException {
-        throw new UnknownTypeException(node);
+        assert value instanceof String;
+        assert node instanceof RubyVariable;
+        if (LOCALS_VALUE_COLUMN_ID.equals(columnID))
+            rubySession.setValueAt((RubyVariable)node, (String)value);
+        else if (LOCALS_TYPE_COLUMN_ID.equals(columnID))
+            rubySession.setTypeAt((RubyVariable)node, (String)value);
+        else
+            throw new UnknownTypeException(node);
     }
 
     public boolean canRename(Object node) throws UnknownTypeException {
